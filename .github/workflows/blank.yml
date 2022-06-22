@@ -21,5 +21,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: npm install -g cow-say
-      - run: cow-say "Welcome to this workshop"
+      - run: npm install -g cowsay
+      - run: cowsay "Welcome to this workshop"
