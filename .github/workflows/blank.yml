@@ -1,0 +1,25 @@
+# .github/workflows/my-workflow.yml
+name: learn-github-actions
+
+on: [push]
+
+jobs:
+  job1:
+    name: Job 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install -g hello-world-npm
+      - run: hello-world-npm
+  job2:
+    name: Job 2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install -g cowsay
+      - run: cowsay "Welcome to this workshop"
