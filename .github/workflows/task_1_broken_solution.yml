@@ -1,0 +1,22 @@
+name: This runs on the main branch
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+  task1:
+    name: Task 1 - Fix the broken workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: cd example-app
+      - run: npm install
+      - run: npm run lint
+      - run: npm test
+      - run: npm build
