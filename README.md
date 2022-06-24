@@ -37,16 +37,32 @@ __File:__ `.github/workflows/task_3_quote_of_the_day.yml`
 1. __Create a new workflow file named `task_3_quote_of_the_day.yml`__
 2. __This workflow should trigger on the event `workflow_dispatch`, [read more here](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch).__
 
-3. __Setup a new job that uses [this action](https://github.com/marketplace/actions/chuck-norris-quote) to output a random Chuck Norris quote.__
-__Read the [documentation](https://github.com/marketplace/actions/chuck-norris-quote#a-sample-workflow-to-specify-html-output-and-use-it-in-a-subsequent-step) to find out how to use the output of the action.__
+3. __Setup a new job that uses these steps to output a Chuck Norris Joke.__
 
-4. __Use [this action](https://github.com/marketplace/actions/http-request-action) to perform a http `POST` request to `https://chuck.alexc.no/api/quote`.__
+```
+      - name: Fetch quote
+        uses: fjogeleit/http-request-action@v1
+        id: getQuoteResponse
+        with:
+          url: 'https://api.chucknorris.io/jokes/random'
+          method: 'GET'
+      - name: Show Response
+        id: quote
+        run: |
+          echo "::set-output name=QUOTE::${{ fromJson(steps.getQuoteResponse.outputs.response).value }}"
+```
+
+5. __Use [this action](https://github.com/marketplace/actions/http-request-action) to perform a http `POST` request to `https://chuck.alexc.no/api/quote`.__
 __The body should be as follows__ 
 ```
-{ "quote": "<the quote here>", "accessCode": "Ask Alex for the code" }
+{ "quote": "<the quote here>", "accessCode": "<ask Alex for the code>" }
 ```
-__The accessCode is secret, and should be treated as such! See this link for information on [how to create a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository)__
+
+The accessCode is secret, and should be treated as such! See this link for information on [how to create a secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository)
 and this link on [how to use a secret in your workflow](https://docs.github.com/en/actions/security-guides/encrypted-secrets#using-encrypted-secrets-in-a-workflow).
+
+The quote can be fetched from the step with `id: quote`, look [here for more info](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#example-setting-a-value).
+
 
 5. __View the glorious results [here](https://chuck.alexc.no).__ 
 
@@ -69,4 +85,13 @@ __File:__ `.github/workflows/task_4_composite_action.yml`
 4. __Edit the workflow `task_4_composite_action.yml` so that it uses your new action!__
 
 
-### Task 5 - Create a composite action
+### Task 5 - Create your own workflow that listens to the [issue comment event](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#issue_comment)
+
+Use the [marketplace](https://github.com/marketplace?type=actions) to find actions that help you respond to comments. 
+Try to make it react with an emoji, or respond to the comment with a message.
+
+### Task 6 - Creating a ChatOps Bot
+
+You can dispatch your own repository events in GitHub Actions. These can be useful to trigger other workflows who are listening to the same event.
+
+Use this repository as inspiration to get started. https://github.com/peter-evans/slash-command-dispatch

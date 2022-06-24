@@ -10,21 +10,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Deploy Stage
+
+      - name: Fetch quote
         uses: fjogeleit/http-request-action@v1
-        id: myRequest
+        id: getQuoteResponse
         with:
           url: 'https://api.chucknorris.io/jokes/random'
           method: 'GET'
-
       - name: Show Response
         id: quote
         run: |
-          echo "::set-output name=QUOTE::${{ fromJson(steps.myRequest.outputs.response).value }}"
+          echo "::set-output name=QUOTE::${{ fromJson(steps.getQuoteResponse.outputs.response).value }}"
 
-
-
-      - name: Deploy Stage
+      - name: Post Quote
         uses: fjogeleit/http-request-action@v1
         with:
           url: 'https://chuck.alexc.no/api/quote'
