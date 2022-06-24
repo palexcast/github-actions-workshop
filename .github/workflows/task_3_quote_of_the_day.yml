@@ -1,0 +1,29 @@
+name: Task 3 - Chuck Norris
+
+on:
+  manual_dispatch:
+
+jobs:
+  task3:
+    name: Task 3 - Chuck Norris
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: chuck-norris-quote-action-html
+        id: htmlchuck
+        uses: glav/chuck-norris-quote@v1.0
+        with:
+          quote-format: 'html'
+          escape-quote: 'true'
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: 'https://chuck.alexc.no/api/quote'
+          method: 'POST'
+          customHeaders: '{"Content-Type": "application/json"}'
+          data: |
+            {
+                "quote": "${{ steps.htmlchuck.outputs.quote }}",
+                "access_code": "${{ secrets.ACCESS_CODE }}"
+            }
