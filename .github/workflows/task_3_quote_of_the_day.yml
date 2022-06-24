@@ -33,5 +33,5 @@ jobs:
           data: |
             {
                 "quote": "${{ steps.quote.outputs.quote }}",
-                "access_code": "${{ secrets.ACCESS_CODE }}"
+                "accessCode": "${{ secrets.ACCESS_CODE }}"
             }
