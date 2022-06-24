@@ -1,7 +1,7 @@
 name: Task 3 - Chuck Norris
 
 on:
-  manual_dispatch:
+  workflow_dispatch:
 
 jobs:
   task3:
