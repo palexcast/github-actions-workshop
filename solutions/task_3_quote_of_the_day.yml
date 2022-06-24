@@ -10,12 +10,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: chuck-norris-quote-action-html
-        id: htmlchuck
-        uses: glav/chuck-norris-quote@v1.0
+      - name: Deploy Stage
+        uses: fjogeleit/http-request-action@v1
+        id: myRequest
         with:
-          quote-format: 'html'
-          escape-quote: 'true'
+          url: 'https://api.chucknorris.io/jokes/random'
+          method: 'GET'
+
+      - name: Show Response
+        id: quote
+        run: |
+          echo "::set-output name=QUOTE::${{ fromJson(steps.myRequest.outputs.response).value }}"
+
+
+
       - name: Deploy Stage
         uses: fjogeleit/http-request-action@v1
         with:
@@ -24,6 +32,6 @@ jobs:
           customHeaders: '{"Content-Type": "application/json"}'
           data: |
             {
-                "quote": "${{ steps.htmlchuck.outputs.quote }}",
+                "quote": "${{ steps.quote.outputs.quote }}",
                 "access_code": "${{ secrets.ACCESS_CODE }}"
             }
